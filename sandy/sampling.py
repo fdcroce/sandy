@@ -15,13 +15,11 @@ __all__ = []
 
 def parse(iargs=None):
     """Parse command line arguments for sampling option.
-
     Parameters
     ----------
     iargs : `list` of `str` or `None`, default is `None`,
         list of strings to parse.
         The default is taken from `sys.argv`.
-
     Returns
     -------
     `argparse.Namespace`
@@ -149,50 +147,41 @@ def parse(iargs=None):
     return init
 
 
-def run(cli):
+def run(cli="--help"):
     """
     
-
     Parameters
     ----------
     cli : TYPE
         DESCRIPTION.
-
     Returns
     -------
     None.
-
     Examples
     --------
     Retrieve ENDF-6 tape and write it to file.
     >>> sandy.get_endf6_file("jeff_33", "xs", 10010).to_file("H1.jeff33")
-
     Produce perturbed ACE file.
     >>> cli = "H1.jeff33 --acer True --samples 2 --processes 2 --temperatures 900 --seed33 5"
     >>> sandy.sampling.run(cli)
-
     Check if ACE and XSDIR files have the right content.
     >>> assert "1001.09c" in open("1001_0.09c").read()
     >>> assert "1001.09c" in open("1001_0.09c.xsd").read()
     >>> assert "1001.09c" in open("1001_1.09c").read()
     >>> assert "1001.09c" in open("1001_1.09c.xsd").read()
     >>> assert not filecmp.cmp("1001_0.09c", "1001_1.09c")
-
     Run the same on a single process.
     >>> cli = "H1.jeff33 --acer True --samples 2 --processes 2 --temperatures 900 --seed33 5 --outname={ZAM}_{SMP}_SP"
     >>> sandy.sampling.run(cli)
-
     The identical seed ensures consistent results with the previous run.
     >>> assert filecmp.cmp("1001_0.09c", "10010_0_SP.09c")
     >>> assert filecmp.cmp("1001_1.09c", "10010_1_SP.09c")
     >>> assert filecmp.cmp("1001_0.09c.xsd", "10010_0_SP.09c.xsd")
     >>> assert filecmp.cmp("1001_1.09c.xsd", "10010_1_SP.09c.xsd")
-
     Produce perturbed ENDF6 and PENDF files.
     >>> cli = "H1.jeff33 --samples 2 --processes 2 --outname=H1_{MAT}_{SMP} --mt 102"
     >>> sandy.sampling.run(cli)
     >>> assert os.path.getsize("H1_125_0.pendf") > 0 and os.path.getsize("H1_125_1.pendf") > 0
-
     >>> assert filecmp.cmp("H1_125_0.endf6", "H1_125_1.endf6")
     >>> assert filecmp.cmp("H1_125_0.endf6", "H1.jeff33")
     >>> assert not filecmp.cmp("H1_125_0.pendf", "H1_125_1.pendf")
@@ -204,11 +193,7 @@ def run(cli):
     iargs = parse(cli.split())
 
     endf6 = sandy.Endf6.from_file(iargs.file)
-    
-    njoy_kws = dict(
-        err=0.01,
-        temperature=0,
-        )
+    njoy_kws = {}
     if iargs.mt33:
         njoy_kws["errorr33_kws"] = dict(mt=iargs.mt33)
 
@@ -224,16 +209,19 @@ def run(cli):
 
     smps = endf6.get_perturbations(iargs.samples, njoy_kws=njoy_kws, smp_kws=smp_kws)
     
-    ace_kws = dict(
-        temperature=iargs.temperatures[0] if hasattr(iargs.temperatures, "__len__") else iargs.temperatures
-        )
-    endf6._mp_apply_perturbations(
+    if iargs.temperatures:
+        temperature = iargs.temperatures[0] if hasattr(iargs.temperatures, "__len__") else iargs.temperatures
+    else:
+        temperature = 0
+        
+    endf6.apply_perturbations(
         smps,
         processes=iargs.processes,
         to_file=True,
         to_ace=iargs.acer,
         filename=iargs.outname,
-        ace_kws=ace_kws,
+        njoy_kws=dict(err=0.005),
+        ace_kws=dict(temperature=temperature, err=0.005),
         verbose=iargs.verbose,
     )
 

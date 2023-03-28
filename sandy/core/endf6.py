@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec  4 14:50:33 2019
-
 @author: lfiorito
 """
 import io
@@ -86,7 +85,6 @@ pd.options.display.float_format = '{:.5e}'.format
 def get_tsl_index(library):
     """
     Obtain the index information available in the library web page.
-
     Parameters
     ----------
     library : `str`
@@ -97,12 +95,10 @@ def get_tsl_index(library):
             * `'endfb_80'`
             * `'jendl_40u`
             * `'irdff_ii`
-
     Raises
     ------
     ValueError
         if library is not among available selection.
-
     Example
     ------
     >>> sandy.endf6.get_tsl_index("jendl_40u")
@@ -179,7 +175,6 @@ def get_endf6_file(library, kind, zam, to_file=False):
     """
     Given a library and a nuclide import the corresponding ENDF-6 nuclear
     data file directly from internet.
-
     Parameters
     ----------
     library : `str`
@@ -227,100 +222,77 @@ def get_endf6_file(library, kind, zam, to_file=False):
         zam = 'all'
             We obtain the information of all the library. This option is not
             available for 'xs'
-
     Raises
     ------
     ValueError
         if library is not among available selection.
-
     ValueError
         if when you select 'xs', you select zam = 'all'
-
     Notes
     -----
     .. note:: In the `kind='tls'` option, instead of the zam, integers are used.
               If you need help, the `get_tsl_index` function contains all the
               necessary information for the correct choice of these integers.
-
     Returns
     -------
     `Endf6`
         `Endf6` object with ENDF-6 data for specified library and nuclide.
-
     Examples
     --------
     Import hydrogen file from JEFF-3.3.
     >>> tape = sandy.get_endf6_file("jeff_33", 'xs', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import hydrogen file from ENDF/B-VII.1.
     >>> tape = sandy.get_endf6_file("endfb_71", 'xs', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import hydrogen file from ENDF/B-VIII.0.
     >>> tape = sandy.get_endf6_file("endfb_80", 'xs', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import hydrogen file from JENDL-4.0u
     >>> tape = sandy.get_endf6_file("jendl_40u", 'xs', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import Neutron-Induced Fission Product Yields for Th-227 from ENDF/B-VII.1.
     >>> tape = sandy.get_endf6_file("endfb_71", 'nfpy', 902270)
     >>> assert type(tape) is sandy.Endf6
-
     Import Neutron-Induced Fission Product Yields for Th-227 from ENDF/B-VIII.0
     >>> tape = sandy.get_endf6_file("endfb_80", 'nfpy', 902270)
     >>> assert type(tape) is sandy.Endf6
-
     Import Neutron-Induced Fission Product Yields for Th-227 from JENDL-4.0u
     >>> tape = sandy.get_endf6_file("jendl_40u", 'nfpy', 902270)
     >>> assert type(tape) is sandy.Endf6
-
     Import Neutron-Induced Fission Product Yields for Th-232 from JEFF-3.1.1
     >>> tape = sandy.get_endf6_file("jeff_311", 'nfpy', 902320)
     >>> assert type(tape) is sandy.Endf6
-
     Import Neutron-Induced Fission Product Yields for Th-232 from JEFF-3.3
     >>> tape = sandy.get_endf6_file("jeff_33", 'nfpy', 902320)
     >>> assert type(tape) is sandy.Endf6
-
     Import Radioactive Decay Data for H-1 from JEFF-3.1.1
     >>> tape = sandy.get_endf6_file("jeff_311", 'decay', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import Radioactive Decay Data for H-1 from JEFF-3.3
     >>> tape = sandy.get_endf6_file("jeff_33", 'decay', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import Radioactive Decay Data for H-1 from ENDF/B-VII.1.
     >>> tape = sandy.get_endf6_file("endfb_71", 'decay', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import Radioactive Decay Data for H-1 from ENDF/B-VIII.0.
     >>> tape = sandy.get_endf6_file("endfb_80", 'decay', 10010)
     >>> assert type(tape) is sandy.Endf6
-
     Import all Neutron-Induced Fission Product Yields from ENDF/B-VII.1.
     >>> tape = sandy.get_endf6_file("endfb_71", 'nfpy', 'all')
     >>> assert type(tape) is sandy.Endf6
-
     Import a list of Decay Data for JEFF-3.3.
     >>> tape = sandy.get_endf6_file("jeff_33", 'decay', [380900, 551370, 541350])
     >>> assert type(tape) is sandy.Endf6
-
     Thermal Neutron Scattering Data from ENDF/B-VII.1.
     >>> tape = sandy.get_endf6_file("endfb_71", 'tsl', [1, 2, 3])
     >>> assert type(tape) is sandy.Endf6
-
     Thermal Neutron Scattering Data from ENDF/B-VIII.0.
     >>> tape = sandy.get_endf6_file("endfb_80", 'tsl', [1, 2, 3])
     >>> assert type(tape) is sandy.Endf6
-
     Thermal Neutron Scattering Data from JEFF-3.3.
     >>> tape = sandy.get_endf6_file("jeff_33", 'tsl', [1, 2, 3])
     >>> assert type(tape) is sandy.Endf6
-
     Thermal Neutron Scattering Data from JENDL-4.0u
     >>> tape = sandy.get_endf6_file("jendl_40u", 'tsl', [1, 2, 3])
     >>> assert type(tape) is sandy.Endf6
@@ -503,24 +475,19 @@ def get_endf6_file(library, kind, zam, to_file=False):
 class _FormattedFile():
     """
     Base class to store ENDF-6 content grouped by `(MAT, MF, MT)`
-
     Attributes
     ----------
     data
-
     keys
-
     kind : `str`
         Kind of ENDF-6 formatted file (`'endf6'`, `'pendf'`, `'gendf'`,
         `'errorr'`) .
-
     mat : `int`
         MAT number.
     mf : `int`
         MF number.
     mt : `int`
         MT number
-
     Methods
     -------
     add_sections
@@ -536,7 +503,6 @@ class _FormattedFile():
     to_file
         Given a filename write the content of the instance to disk in
         ASCII format.
-
     Notes
     -----
     This class supports ENDF-6 content from ENDF-6 files, ERRORR files and
@@ -566,7 +532,6 @@ class _FormattedFile():
     def keys(self):
         """
         List of keys `(MAT, MF, MT)` used to identify each tape section.
-
         Returns
         -------
         `list`
@@ -606,12 +571,10 @@ class _FormattedFile():
         """
         Kind of ENDF-6 formatted file (`'endf6'`, `'pendf'`, `'gendf'`,
         `'errorr'`) .
-
         Returns
         -------
         `str`
             kind of ENDF-6 formatted file
-
         Examples
         --------
         >>> assert sandy.get_endf6_file("jeff_33", "decay", 10010).kind == "endf6"
@@ -654,22 +617,18 @@ class _FormattedFile():
         Given a filename and the url where the file is located,
         extract the ENDF6 data from the file into a sandy.Endf6
         instance.
-
         Parameters
         ----------
         filename: 'str'
             The filename without path of the zip file to read
         rooturl: 'str'
             The url direction to extract the zip files
-
         Returns
         -------
         `Endf6`
             `Endf6` object with ENDF-6 data for specified library and nuclide.
-
         Examples
         --------
-
         >>> filename = "n-1-H-001.jeff32"
         >>> rooturl = "https://www.oecd-nea.org/dbforms/data/eva/evatapes/jeff_32/"
         >>> sandy.Endf6.from_url(filename, rooturl)
@@ -695,19 +654,16 @@ class _FormattedFile():
         """
         Given a filename and the url where the file is located,
         extract the ENDF6 data from the file into a string.
-
         Parameters
         ----------
         filename: 'str'
             The filename without path of the zip file to read
         rooturl: 'str'
             The url direction to extract the zip files
-
         Returns
         -------
         `str`
             All the endf6 data in a 'str'
-
         Examples
         --------
         Removed because website stopped working
@@ -740,22 +696,18 @@ class _FormattedFile():
         Given a filename and the url where the file is located (in
         zipped format), extract the ENDF6 data from the file into a
         sandy.Endf6 instance.
-
         Parameters
         ----------
         filename: 'str'
             The filename without path of the zip file to read
         rooturl: 'str'
             The url direction to extract the zip files
-
         Returns
         -------
         `Endf6`
             `Endf6` object with ENDF-6 data for specified library and nuclide.
-
         Examples
         --------
-
         >>> filename = "decay_1907_57-La-149.dat"
         >>> rooturl = "https://www-nds.iaea.org/public/download-endf/ENDF-B-VII.1/decay/"
         >>> sandy.Endf6.from_zipurl(filename, rooturl)
@@ -774,22 +726,18 @@ class _FormattedFile():
         Given a filename and the url where the file is located (in
         zipped format), extract the ENDF6 data from the file into
         a string.
-
         Parameters
         ----------
         filename: 'str'
             The filename without path of the zip file to read
         rooturl: 'str'
             The url direction to extract the zip files
-
         Returns
         -------
         `str`
             All the endf6 data in a 'str'
-
         Examples
         --------
-
         >>> filename = "decay_1907_57-La-149.dat"
         >>> rooturl = "https://www-nds.iaea.org/public/download-endf/ENDF-B-VII.1/decay/"
         >>> file = sandy.Endf6.read_zipurl(filename, rooturl)
@@ -824,17 +772,14 @@ class _FormattedFile():
     def from_file(cls, file):
         """
         Create dataframe by reading a file.
-
         Parameters
         ----------
         file : `str`
             filename
-
         Returns
         -------
         `sandy.formats.endf6.BaseFile` or derived instance
             Dataframe containing ENDF6 data grouped by MAT/MF/MT
-
         Examples
         --------
         Read hydrogen tape from endf-6 formatted file.
@@ -852,7 +797,6 @@ class _FormattedFile():
                  2       1.001000+3 9.991673-1          0          0  ...
                  102     1.001000+3 9.991673-1          0          0  ...
         dtype: object
-
         Read hydrogen tape from text stream.
         >>> stream = io.StringIO(open(file).read())
         >>> _FormattedFile.from_file(stream)
@@ -879,17 +823,14 @@ class _FormattedFile():
     @classmethod
     def from_text(cls, text):
         """Create dataframe from endf6 text in string.
-
         Parameters
         ----------
         text : `str`
             string containing the evaluated data
-
         Returns
         -------
         `sandy.formats.endf6.BaseFile` or derived instance
             Dataframe containing ENDF6 data grouped by MAT/MF/MT
-
         Examples
         --------
         Read hydrogen tape from text.
@@ -962,7 +903,6 @@ class _FormattedFile():
         """
         Given MAT, MF and MT add/replace the corresponding section in the
         `Endf6.data`.
-
         Parameters
         ----------
         mat : `int`
@@ -971,12 +911,10 @@ class _FormattedFile():
             MF number
         mt : `int`
             MT number
-
         Returns
         -------
         `sandy._FormattedFile` or derived instance
             object with new section
-
         Examples
         --------
         >>> tape = sandy.Endf6({(9437, 3, 102) : "lorem ipsum"})
@@ -1002,7 +940,6 @@ class _FormattedFile():
         """
         Given MAT, MF and MT delete the corresponding section from the
         `Endf6.data`.
-
         Parameters
         ----------
         mat : `int`
@@ -1011,12 +948,10 @@ class _FormattedFile():
             MF number
         mt : `int`
             MT number
-
         Returns
         -------
         `sandy._FormattedFile` or derived instance
             object without given section
-
         Examples
         --------
         Delete capture cross section from hydrogen file.
@@ -1061,24 +996,20 @@ class _FormattedFile():
         `self` instance and return a new `sandy.Endf6` object.
         The new `sandy.Endf6` object contains all MAT/MF/MT sections in `self`
         and in the passed arguments.
-
         Parameters
         ----------
         iterable : `sandy.Endf6` or iterable of `sandy.Endf6` objects
             The ENDF6 files that will be merged to `self`.
-
         Returns
         -------
         merged : :func:`_FormattedFile`
             a ENDF6 file containing the MAT/MF/MT sections of `self` and of
             the passed ENDF6 files.
-
         Notes
         -----
         .. note:: if any section (MAT/MF/MT) already present in the orginal
                   ENDF6 tape also appears in any tape that is being merged,
                   then the original ENDF6 section will be overwritten.
-
         Examples
         --------
         Merge two files.
@@ -1087,14 +1018,12 @@ class _FormattedFile():
         >>> h = h1.merge(h2)
         >>> assert h.to_series()[h1.to_series().index].equals(h1.to_series())
         >>> assert h.to_series()[h2.to_series().index].equals(h2.to_series())
-
         Merge three files from different libraries.
         >>> h3 = sandy.get_endf6_file("endfb_71", 'xs', 10030)
         >>> h_ = h1.merge(h2, h3).to_series()
         >>> h__ = h.merge(h3).to_series()
         >>> h___ = h1.merge(h2).merge(h3).to_series()
         >>> assert h_.equals(h__) and h_.equals(h___)
-
         Merge two evaluations for the same nuclide.
         >>> bi_71 = sandy.get_endf6_file("endfb_71", 'xs', 832090)
         >>> bi_33 = sandy.get_endf6_file("jeff_33", 'xs', 832090)
@@ -1114,7 +1043,6 @@ class _FormattedFile():
                   listmf=range(1, 10000),
                   listmt=range(1, 10000)):
         """Filter dataframe based on MAT, MF, MT lists.
-
         Parameters
         ----------
         listmat : `list` or `None`
@@ -1123,7 +1051,6 @@ class _FormattedFile():
             list of requested MF values (default is `None`: use all MF)
         listmt : `list` or `None`
             list of requested MT values (default is `None`: use all MT)
-
         Returns
         -------
         `sandy.formats.endf6.BaseFile` or derived instance
@@ -1169,22 +1096,18 @@ class _FormattedFile():
         """
         Write `_FormattedFile.data` content to string according to the ENDF-6
         file rules.
-
         Parameters
         ----------
         title : `str`, optional, default is an empty string
             first line of the file
-
         Returns
         -------
         `str`
             string containing the ENDF-6 information stored in this instance.
-
         Notes
         -----
         ..note:: no modification is implemented to the actual content of
                  the `Endf6.data` object.
-
         Examples
         --------
         >>> string = sandy.get_endf6_file("jeff_33", "xs", 10010).write_string()
@@ -1193,10 +1116,8 @@ class _FormattedFile():
          1.001000+3 9.991673-1          0          0          2          5 125 1451    1
          0.000000+0 0.000000+0          0          0          0          6 125 1451    2
          1.000000+0 2.000000+7          3          0         10          3 125 1451    3
-
         if no modification is applied to the `_FormattedFile` content, the
         `write_string` returns an output identical to the file ASCII content.
-
         Test with `sandy.Errorr` object and title option:
         >>> endf6 = sandy.get_endf6_file("jeff_33", "xs", 10010)
         >>> err = endf6.get_errorr(ek=[1e-2, 1e1, 2e7], err=1)["errorr33"]
@@ -1206,7 +1127,6 @@ class _FormattedFile():
         >>> assert err_2.data[(125, 1, 451)] == err.data[(125, 1, 451)]
         >>> assert err_2.data[(125, 3, 102)] == err.data[(125, 3, 102)]
         >>> assert err_2.data[(125, 33, 102)] == err.data[(125, 33, 102)]
-
         ..note:: differences might appear from the way zeros were handled at
                  the end of ENDF-6 section, or if a different fiel title is
                  given
@@ -1233,23 +1153,19 @@ class _FormattedFile():
         """
         Given a filename write the content of a `_FormattedFile` instance to
         disk in ASCII format.
-
         Parameters
         ----------
         filename : `str`
             The name of the file.
         mode : `str`, optional
             Mode while opening a file. The default is "w".
-
         Parameters for `write_string`
         -----------------------------
         title : `str`, optional, default is an empty string
             first line of the file
-
         Returns
         -------
         None.
-
         """
         text = self.write_string(**kwargs)
         with open(filename, mode) as f:
@@ -1259,7 +1175,6 @@ class _FormattedFile():
 class Endf6(_FormattedFile):
     """
     Container for ENDF-6 file text grouped by MAT, MF and MT numbers.
-
     Methods
     -------
     get_ace
@@ -1290,12 +1205,10 @@ class Endf6(_FormattedFile):
         **kwargs : `dict`
             dictionary of elements to be modified in section MF1/MT451 (it
             applies to all MAT numbers).
-
         Returns
         -------
         :func:`~sandy.Endf6`
             :func:`~sandy.Endf6` with updated MF1/MT451.
-
         
         Examples
         --------
@@ -1305,20 +1218,17 @@ class Endf6(_FormattedFile):
         >>> intro = tape.read_section(125, 1, 451)
         >>> assert len(intro["DESCRIPTION"]) == 87
         >>> assert len(intro["SECTIONS"]) == 10
-
         By removing sections in the `Endf6` instance, the recorded number of
         sections does not change.
         >>> tape2 = tape.delete_sections([(125, 33, 1), (125, 33, 2)])
         >>> intro = tape2.read_section(125, 1, 451)
         >>> assert len(intro["DESCRIPTION"]) == 87
         >>> assert len(intro["SECTIONS"]) == 10
-
         Running `updated intro` updates the recorded number of sections.
         >>> tape2 = tape.delete_sections([(125, 33, 1), (125, 33, 2)]).update_intro()
         >>> intro = tape2.read_section(125, 1, 451)
         >>> assert len(intro["DESCRIPTION"]) == 87
         >>> assert len(intro["SECTIONS"]) == 8
-
         It can also be used to update the lines of description.
         >>> intro = tape2.update_intro(**dict(DESCRIPTION=[" new description"])).read_section(125, 1, 451)
         >>> print(sandy.write_mf1(intro))
@@ -1351,12 +1261,10 @@ class Endf6(_FormattedFile):
         """
         Determine ENDF-6 sub-library type by reading flag "NSUB" of first MAT
         in file.
-
         Returns
         -------
         `int`
             NSUB value
-
         Examples
         --------
         assert sandy.get_endf6_file("jeff_33", "xs", 10010).get_nsub() == "neutron"
@@ -1374,19 +1282,16 @@ class Endf6(_FormattedFile):
         """
         Decorator to handle keyword arguments for NJOY before running
         the executable.
-
         Examples
         --------
         Test that `minimal_processing` filters unwanted modules.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, minimal_processing=True, temperature=300, dryrun=True)
         >>> assert "broadr" in g and "reconr" in g
         >>> assert "thermr" not in g and "purr" not in g and "heatr" not in g and "unresr" not in g and "gaspr" not in g
-
         Test `minimal_processing=False`.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, temperature=300, dryrun=True)
         >>> assert "broadr" in g and "reconr" in g
         >>> assert "thermr" in g and "purr" in g and "heatr" in g and "gaspr" in g
-
         Check that for `temperature=0` the calculation stops after RECONR.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, dryrun=True)
         >>> assert "reconr" in g
@@ -1451,19 +1356,16 @@ class Endf6(_FormattedFile):
         """
         Decorator to handle keyword arguments for NJOY before running
         the executable.
-
         Examples
         --------
         Test that `minimal_processing` filters unwanted modules.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, minimal_processing=True, temperature=300, dryrun=True)
         >>> assert "broadr" in g and "reconr" in g
         >>> assert "thermr" not in g and "purr" not in g and "heatr" not in g and "unresr" not in g and "gaspr" not in g
-
         Test `minimal_processing=False`.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, temperature=300, dryrun=True)
         >>> assert "broadr" in g and "reconr" in g
         >>> assert "thermr" in g and "purr" in g and "heatr" in g and "gaspr" in g
-
         Check that for `temperature=0` the calculation stops after RECONR.
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_gendf(err=1, dryrun=True)
         >>> assert "reconr" in g
@@ -1500,7 +1402,6 @@ class Endf6(_FormattedFile):
     def read_section(self, mat, mf, mt, raise_error=True):
         """
         Parse MAT/MF/MT section.
-
         Parameters
         ----------
         `mat` : int
@@ -1509,7 +1410,6 @@ class Endf6(_FormattedFile):
             MF number
         `mt` : int
             MT number
-
         Returns
         -------
         `dict`
@@ -1553,19 +1453,16 @@ class Endf6(_FormattedFile):
     def get_id(self, method="nndc"):
         """
         Extract ID for a given MAT for a ENDF-6 file.
-
         Parameters
         ----------
         method : `str`, optional
             Methods adopted to produce the ID. The default is `"nndc"`.
             - if `method='aleph'` the ID is the ZAM identifier
             - else, the ID is the ZA identifier according to the NNDC rules
-
         Returns
         -------
         ID : `int`
             ID of the ENDF-6 file.
-
         Notes
         -----
         .. note:: a warning is raised if more than one MAT is found.
@@ -1577,12 +1474,10 @@ class Endf6(_FormattedFile):
         >>> tape = sandy.get_endf6_file("jeff_33", "xs", 10010)
         >>> assert tape.get_id() == 1001
         >>> assert tape.get_id(method="aleph") == 10010
-
         Extract ID for Am242m file using NNDC and ALEPH methods
         >>> tape2 = sandy.get_endf6_file("jeff_33", "xs", 952421)
         >>> assert tape2.get_id() == 95642
         >>> assert tape2.get_id(method="ALEPH") == 952421
-
         >>> assert tape.merge(tape2).get_id() == 1001
         >>> assert tape2.merge(tape).get_id() == 1001
         """
@@ -1606,7 +1501,6 @@ class Endf6(_FormattedFile):
                 ):
         """
         Process `Endf6` instance into an ACE file using NJOY.
-
         Parameters
         ----------
         dryrun : `bool`, optional
@@ -1620,12 +1514,10 @@ class Endf6(_FormattedFile):
             Default is None.
         **kwargs : `dict`
             keyword argument to pass to :func:`~sandy.njoy.process_neutron`.
-
         Returns
         -------
         `dict` of `str`
             output with `'ace'` and `'xsdir'` as keys.
-
         Examples
         --------
         Check that output is a ace file.
@@ -1634,23 +1526,19 @@ class Endf6(_FormattedFile):
         >>> assert "1001.07c" in ace
         >>> assert "sandy runs acer" in ace
         >>> assert "mat 125" in ace
-
         Check that ace is processed at a different temperature.
         >>> ace = e6.get_ace(temperature=800, err=1, minimal_processing=True)["ace"]
         >>> assert "1001.08c" in ace
         Check xsdir.
         >>> print(outs[xsdir])
         1001.08c    0.999167 filename 0 1   1     3297     0     0 6.894E-08
-
         Check that using option `pendf` results in the same output.
         >>> pendf = e6.get_pendf(temperature=0, err=1)
         >>> ace2 = e6.get_ace(temperature=800, err=1, , minimal_processing=True, pendf=pendf)["ace"]
         >>> assert ace == ace2
-
         Check that the option suffix is used correctly.
         >>> ace = e6.get_ace(temperature=800, suffix=".85", err=1)
         >>> assert "1001.85c" in ace
-
         Check input pendf file
         >>> with pytest.raises(Exception) as e_info:
         >>>    e6.get_ace(pendf=e6)
@@ -1682,17 +1570,14 @@ class Endf6(_FormattedFile):
     def get_pendf(self, **kwargs,):
         """
         Process `Endf6` instance into an PENDF file using NJOY.
-
         Parameters
         ----------
         **kwargs : `dict`
             keyword argument to pass to :func:`~sandy.njoy.process_neutron`.
-
         Returns
         -------
         pendf : :func:`~sandy.Endf6`
             Pendf object
-
         Examples
         --------
         Default run.
@@ -1721,45 +1606,37 @@ class Endf6(_FormattedFile):
     def get_gendf(self, **kwargs,):
         """
         Process `Endf6` instance into a Gendf file using NJOY.
-
         Parameters
         ----------
         **kwargs : `dict`
             keyword argument to pass to :func:`~sandy.njoy.process_neutron`.
-
         Returns
         -------
         gendf : :func:`~sandy.Gendf`
             Gendf object
-
         Examples
         --------
         Default run.
         >>> endf6 = sandy.get_endf6_file("jeff_33", "xs", 10010)
         >>> out = endf6.get_gendf(temperature=293.6, minimal_processing=True)
         >>> assert isinstance(out, sandy.Gendf)
-
         Test keyword `sigz`
         >>> out = endf6.get_gendf(groupr_kws=dict(sigz=[1e10, 1e2]))
         >>> assert 1e10 in sandy.gendf.read_mf1(out, 125)[sigz]
         >>> assert 1e10 in sandy.gendf.read_mf1(out, 125)[sigz]
-
         Test keyword `iwt`
         >>> g = endf6.get_gendf(groupr_kws=dict(iwt=3), dryrun=True)
         >>> found = re.search('groupr(.*)moder', g, flags=re.DOTALL).group().splitlines()
         assert "125 2 0 3 0 1 1 0 /" == found[2]
-
         Test keyword `ign`
         >>> g = endf6.get_gendf(groupr_kws=dict(ign=3), dryrun=True)
         >>> found = re.search('groupr(.*)moder', g, flags=re.DOTALL).group().splitlines()
         assert "125 3 0 2 0 1 1 0 /" == found[2]
-
         Test keyword `ek`
         >>> g = endf6.get_gendf(groupr_kws=dict(ek=sandy.energy_grids.CASMO12), dryrun=True)
         >>> found = re.search('groupr(.*)moder', g, flags=re.DOTALL).group().splitlines()
         >>> ek = np.array(list(map(float, found[7].replace("/", "").split())))
         >>> assert np.testing.array_allclose(ek, sandy.energy_grids.CASMO12, rtol=1e-14, atol=1e-14)
-
         Test groupr MFs and MTs for fissile and non-fissile nuclides
         >>> g = endf6.get_gendf(dryrun=True)
         >>> found = re.search('groupr(.*)moder', g, flags=re.DOTALL).group().splitlines()
@@ -1769,7 +1646,6 @@ class Endf6(_FormattedFile):
         >>> g = endf6.get_gendf(dryrun=True)
         >>> found = re.search('groupr(.*)moder', g, flags=re.DOTALL).group().splitlines()
         >>> assert " ".join(found[6:15]) == '3/ 3 452 / 3 455 / 3 456 / 3 251 / 5/ 5 18 / 0/ 0/'
-
         Test custom MTs
         >>> endf6 = sandy.get_endf6_file("jeff_33", "xs", 10010)
         >>> g = endf6.get_gendf(dryrun=True, groupr_kws=dict(mt=4))
@@ -1816,7 +1692,6 @@ class Endf6(_FormattedFile):
                    ):
         """
         Process `Endf6` instance into a Errorr file using NJOY.
-
         Parameters
         ----------
         chi : `bool`, optional
@@ -1829,21 +1704,17 @@ class Endf6(_FormattedFile):
             Process the xs covariance (default is `True`)
         **kwargs : `dict`
             keyword argument to pass to `sandy.njoy.process`.
-
         spectrum_errorr : iterable, optional
             weight function as a iterable (default is None)
-
         Returns
         -------
         errorr : `sandy.Errorr` or `None`
             - `Errorr` instance constaining the nuclear data of the ERRORR
               file, if covariance information is found.
             - `None` if no covariance information is found.
-
         Notes
         -----
         .. note:: method arguments are consistent with those of `get_pendf`
-
         Examples
         --------
         Default run
@@ -1863,7 +1734,6 @@ class Endf6(_FormattedFile):
         assert out["errorr34"].get_xs().data.squeeze().name == (9443, 251)
         columns = out["errorr31"].get_xs().data.columns
         assert (9443, 452) in columns and (9443, 455) in columns and (9443, 456) in columns
-
         Check consistency between keywords errorr_kws and errorr33_kws
         >>> ekws = dict(irespr=0, iwt=5, ek=[1e-5, 2e7], mt=(16, 18, 102))
         >>> e6 = sandy.get_endf6_file("jeff_33", "xs", 942410)
@@ -1894,7 +1764,6 @@ class Endf6(_FormattedFile):
         >>> inp2 = e6.get_errorr(temperature=300, dryrun=True, errorr33_kws=ekws, errorr31_kws=ekws, errorr34_kws=ekws, errorr35_kws=ekws)
         >>> assert inp1 == inp2
         >>> assert "groupr" in inp1 and "groupr" in inp2
-
         Check default options
         >>> g = sandy.get_endf6_file("jeff_33", "xs", 10010).get_errorr(temperature=300, dryrun=True)
         >>> found = re.search('errorr(.*)', g, flags=re.DOTALL).group().splitlines()
@@ -1911,7 +1780,6 @@ class Endf6(_FormattedFile):
         >>> assert found[2] == '125 3 5 1 0 /'
         >>> assert found[3] == '0 400.0 /'
         >>> assert found[4] = '0 33 0/'
-
         Test spectrum:
         >>> spect = [1.000000e-5, 2.00000000, 3.000000e-2, 2.00000000, 5.800000e-2, 4.00000000, 3, 1]
         >>> out = endf6.get_errorr(spectrum_errorr=spect, ek_errorr=[1.000000e-5, 3.000000e-2, 5.800000e-2, 3], verbose=True, nubar=False, chi=False, mubar=False)
@@ -1991,12 +1859,10 @@ class Endf6(_FormattedFile):
         """
         Extract MAT, MF and MT combinations avaialbel in the file and 
         report it in tabulated format.
-
         Returns
         -------
         df : `pd.DataFrame`
             Dataframe with MAT, MF and MT as columns.
-
         Examples
         --------
         Short test for hydrogen
@@ -2028,11 +1894,9 @@ class Endf6(_FormattedFile):
         Construct multivariate distributions with a unit vector for 
         mean and with relative covariances taken from the evaluated files
         processed with the NJOY module ERRORR.
-
         Perturbation factors are sampled with the same multigroup structure of 
         the covariance matrix and are returned by nuclear datatype as a `dict`
         of `pd.Dataframe` instances .
-
         Parameters
         ----------
         nsmp : TYPE
@@ -2045,12 +1909,10 @@ class Endf6(_FormattedFile):
             DESCRIPTION. The default is {}.
         **kwargs : TYPE
             DESCRIPTION.
-
         Returns
         -------
         smp : TYPE
             DESCRIPTION.
-
         Examples
         --------
         Generate a couple of samples from the H1 file of JEFF-3.3.
@@ -2077,168 +1939,108 @@ class Endf6(_FormattedFile):
                     v.to_excel(writer, sheet_name=f'MF{k}')
         return smp
 
-    def _handle_pert_to_file(method):
+    def perturb_xs(self, pxs):
         """
-        Decorator .
-        """
-        def inner(self, *args, to_file=None, verbose=False, **kwargs):
-            """
-            
-
-            Parameters
-            ----------
-            *args : TYPE
-                DESCRIPTION.
-            to_file : TYPE, optional
-                DESCRIPTION. The default is None.
-            verbose : TYPE, optional
-                DESCRIPTION. The default is False.
-            **kwargs : TYPE
-                DESCRIPTION.
-
-            Returns
-            -------
-            TYPE
-                DESCRIPTION.
-            """
-            if to_file:
-                for n, e6 in method(self, *args, verbose=False, **kwargs):
-                    filename = to_file.format(SMP=n)
-                    if verbose:
-                        print(f"creating file '{filename}'...")
-                    e6.to_file(filename)
-            else:
-                return method(self, *args, verbose=verbose, **kwargs)
-
-        return inner
-
-    @_handle_pert_to_file
-    def apply_perturbations(self, smp, processes=1, **kwargs):
-        """
+        Perturb pendf file according to the distributions generated by
+        "tape.get_perturbations()"
         
-
         Parameters
         ----------
-        smp : TYPE
-            DESCRIPTION.
-        processes : TYPE, optional
-            DESCRIPTION. The default is 1.
-        **kwargs : TYPE
-            DESCRIPTION.
-
+        pxs: perturbation coefficients for the sample .
+        
         Returns
         -------
-        TYPE
-            DESCRIPTION.
-
+        Perturbed pendf file in ENDF6 format.
+        
+        """
+        xs = sandy.Xs.from_endf6(self)._perturb(pxs)
+        return xs.reconstruct_sums(drop=True).to_endf6(self).update_intro()
+    
+    def apply_perturbations(self, smps, processes=1, njoy_kws={}, **kwargs):
+        """
+        Apply perturbations to the data contained in ENDF6 file. At the 
+        moment only the procedure for cross sections is implemented. Options
+        are included to directly convert perturbed pendf to ace and write data
+        on files.
+        
+        Parameters
+        ----------
+        smps : samples obtained taking  the relative covariances from the 
+        evaluated files and a unit vector as mean.
+        processes : number of processes employed to complete the task.
+                    Employed to convert endf in ace format in parallel if >1.
+                    The default is 1.
+        temperature: temperature at which perturbed xs are evaluated.
+                     The default is 0.
+        to_ace: option to write ace files from perturbed pendf.
+                The default is False.
+        implicit_effect: if True pendf at Temperature is generated and 
+                         njoy module "broadr" is not called for the 
+                         generation of ace file.
+                         If False pendf at 0K is produced and then "broadr"
+                         module is called during conversion to ace to obtain 
+                         perturbed file at requested T.
+                         The default is False.
+        to_file: option to write endf6 or ace to a file.
+                 The default is False.
+                
+        filename: if option to_file to customize file name.
+                  The default is "{ZA}_{SMP}".
+        verbose : `bool`, optional
+                  flag to print reminder of file generation of screen.
+                  The default is False.
+        njoy_kws: keyword argument to pass to `tape.get_pendf()`.
+        **kwargs : keyword argument to pass to "tape.get_ace()".
+        Returns
+        -------
+        A dictionary of endf/pendf file or ace files depending on to_ace.  
         Examples
         --------
-        Get a couple of samples from H1 file of JEFF-3.3.
-        >>> njoy_kws = dict(err=1, errorr_kws=dict(mt=102))
-        >>> nsmp = 2
-        >>> smps = sandy.get_endf6_file("jeff_33", "xs", 10010).get_perturbations(nsmp=nsmp, njoy_kws=njoy_kws)
         
-        Process PENDF file.
-        >>> pendf = sandy.get_endf6_file("jeff_33", "xs", 10010).get_pendf(minimal_processing=True)
-
-        Apply samples to xs in PENDF file.
-        >>> outs = pendf.apply_perturbations(smps[33], verbose=True)
-
-        The output is a generator.
-        >>> assert isinstance(outs, types.GeneratorType)
-        >>> outs = dict(outs)
-        Processing xs sample 0...
-        Processing xs sample 1...
-
-        We have as amany files as samples.
-        >>> assert list(outs.keys()) == list(range(nsmp))
-        
-        Assert that only perturbed xs sections are different in perturbed files.
-        >>> for mat, mf, mt in outs[0].keys:
-        ...    if mt != 102:
-        ...        assert outs[0].data[(mat, mf, mt)] == outs[1].data[(mat, mf, mt)]
-        >>> assert outs[0].data[(125, 3, 102)] != outs[1].data[(125, 3, 102)]
-
-        .. note:: the total cross section is not perturbed
-
-        Apply samples to xs in PENDF file using multiprocessing.
-        >>> outs_mp = pendf.apply_perturbations(smps[33], processes=2)
-        
-        Assert that multiprocessing and singleprocessing results are identical.
-        >>> for n in outs:
-        ...    for key in outs[n].data:
-        ...        assert outs_mp[n].data[key] == outs[n].data[key]
         """
-        if smp.data.index.names == [*sandy.Xs._columnsnames] + [sandy.Xs._indexname]:
-            if processes == 1:
-                return self._apply_xs_perturbations(smp, **kwargs)
-            else:
-                return self._mp_apply_perturbations(smp, processes=processes, **kwargs)
-
-
-    def _mp_apply_xs_perturbations(self, smp, processes, **kwargs):
-        # need to pass xs.data (dataframe), because sandy.Xs instance cannot be pickled
-        xs = sandy.Xs.from_endf6(self).data
-        seq = smp.iterate_xs_samples()
-
-        pool = mp.Pool(processes=processes)
-        outs = {n: pool.apply_async(pendf_xs_perturb_worker, (self, xs, n, p), kwargs) for n, p in seq}
-        outs = {n: out.get() for n, out in outs.items()}
-        pool.close()
-        pool.join()
-        return outs
-
-    def _mp_apply_perturbations(self, smps, processes,
-                                pendf_kws={},
-                                **kwargs):
-        # Passed NEDF-6 and PENDF as dictionaries because class instances cannot be pickled
-        endf6 = self.data
         if 33 in smps:
-            pendf = self.get_pendf(**pendf_kws).data
-            kwargs["process_xs"] = True
+            pendf = self.get_pendf(**njoy_kws)
 
-        # Samples passed as generator in apply_async
-        def null_gen():
-            "generator mimicking dictionary and returning only None"
-            while True:
-                yield None, None
+#        if 31 in smps:
+#            seq_nu = smps[31].iterate_nu_samples()
+        if 33 in smps:
+            seq_xs = smps[33].iterate_xs_samples()
+#        if 34 in smps:
+#            seq_lpc = smps[31].iterate_lpc_samples()
+#        if 35 in smps:
+#            seq_chi = smps[35].iterate_chi_samples()
 
-        def get_key(*lst):
-            return np.array([x for x in lst if x is not None]).item()
+        if processes == 1:
+            outs = {}
+            for (nxs, pxs) in seq_xs:
+                outs[nxs] = endf6_perturb_worker(
+                        self.data, pendf.data, nxs, pxs,
+                        **kwargs,
+                        )
 
-        seq_xs = smps[33].iterate_xs_samples() if 33 in smps else null_gen()
-        seq_nu = smps[31].iterate_xs_samples() if 31 in smps else null_gen()
-        seqs = zip(seq_xs, seq_nu)
+        elif processes > 1:
+            pool = mp.Pool(processes=processes)
+            outs = {}
+            for (nxs, pxs) in seq_xs:
+                outs[nxs] = pool.apply_async(
+                                endf6_perturb_worker,
+                                (self.data, pendf.data, nxs, pxs),
+                                kwargs,
+                                )
+            outs = {n: out.get() for n, out in outs.items()}
+            pool.close()
+            pool.join()
 
-
-        pool = mp.Pool(processes=processes)
-        outs = {get_key(nxs, nnu): pool.apply_async(endf6_perturb_worker, (endf6, pendf, nxs, pxs), kwargs)
-                for (nxs, pxs), (nnu, pnu) in seqs}
-        outs = {n: out.get() for n, out in outs.items()}
-        pool.close()
-        pool.join()
         return outs
-
-    def _apply_xs_perturbations(self, smp, **kwargs):
-        xs = sandy.Xs.from_endf6(self)
-        for n, x in xs.perturb(smp, **kwargs):
-            # instead of defining the function twice, just call the worker also here
-            yield n, pendf_perturb_worker(self, n, x, **kwargs)
+    
 
 
-def pendf_perturb_worker(e6, n, xs, **kwargs):
-    # This is the function that needs to be changed for any concatenation
-    # in the pendf reconstruction pipeline
-    out = xs.reconstruct_sums(drop=True).to_endf6(e6).update_intro()
-    return out
-
-
-def endf6_perturb_worker(e6, pendf, nxs, pxs,
+def endf6_perturb_worker(e6, pendf, n,
+                         pxs=None,
+                         pnu=None,
+                         plpc=None,
+                         pedistr=None,
                          verbose=False,
-                         process_xs=False,
-                         process_nu=False,
-                         process_lpc=False,
-                         process_chi=False,
                          to_ace=False,
                          to_file=False,
                          filename="{ZA}_{SMP}",
@@ -2246,26 +2048,17 @@ def endf6_perturb_worker(e6, pendf, nxs, pxs,
                          **kwargs):
     """
     
-
     Parameters
     ----------
     e6 : TYPE
         DESCRIPTION.
     pendf : TYPE
         DESCRIPTION.
-    nxs : TYPE
+    n : TYPE
         DESCRIPTION.
     pxs : TYPE
         DESCRIPTION.
     verbose : TYPE, optional
-        DESCRIPTION. The default is False.
-    process_xs : TYPE, optional
-        DESCRIPTION. The default is False.
-    process_nu : TYPE, optional
-        DESCRIPTION. The default is False.
-    process_lpc : TYPE, optional
-        DESCRIPTION. The default is False.
-    process_chi : TYPE, optional
         DESCRIPTION. The default is False.
     to_ace : TYPE, optional
         DESCRIPTION. The default is False.
@@ -2277,49 +2070,59 @@ def endf6_perturb_worker(e6, pendf, nxs, pxs,
         DESCRIPTION. The default is {}.
     **kwargs : TYPE
         DESCRIPTION.
-
     Returns
     -------
     TYPE
         DESCRIPTION.
-
     """
     # default initialization
     endf6_pert = sandy.Endf6(e6.copy())
     pendf_pert = None
 
-    # filename options, in case we erite to file
-    ismp = np.array([x for x in [nxs] if x is not None]).item()
+    # filename options, in case we write to file
     mat = endf6_pert.mat[0]
     intro = endf6_pert.read_section(mat, 1, 451)
     za = int(intro["ZA"])
     meta = int(intro["LISO"])
     zam = sandy.zam.za2zam(za, meta=meta)
-    temperature = ace_kws["temperature"] = ace_kws.get("temperature", 0)
     params = dict(
         MAT=mat,
         ZAM=zam,
         ZA=za,
         META=meta,
-        SMP=ismp,
+        SMP=n,
         )
     fn = filename.format(**params)
 
+    # apply nubar perturbation
+    if pnu is not None:
+        nu = sandy.Xs.from_endf6(pendf_).filter_by()
+        nu_pert = sandy.core.xs.xs_perturb_worker(xs, n, pnu, verbose=verbose)
+        endf6_pert = nu_pert.reconstruct_sums(drop=True).to_endf6(endf6_pert).update_intro()
+
+    # apply lpc perturbation
+    if plpc is not None:
+        pass
+
+    # apply edistr perturbation
+    if pedistr is not None:
+        pass
+
     # apply xs perturbation
-    if process_xs:
+    if pxs is not None:
         pendf_ = sandy.Endf6(pendf)
         xs = sandy.Xs.from_endf6(pendf_)
-        xs_pert = sandy.core.xs.xs_perturb_worker(xs, nxs, pxs, verbose=verbose)
+        xs_pert = sandy.core.xs.xs_perturb_worker(xs, n, pxs, verbose=verbose)
         pendf_pert = xs_pert.reconstruct_sums(drop=True).to_endf6(pendf_).update_intro()
 
     # Run NJOY and convert to ace
     if to_ace:
-        suffix = ace_kws.get("suffix", sandy.njoy.get_temperature_suffix(temperature))
-        ace_kws["suffix"] = "." + suffix
+        temperature = ace_kws.get("temperature", 0)
+        suffix = ace_kws.get("suffix", "." + sandy.njoy.get_temperature_suffix(temperature))
         ace = endf6_pert.get_ace(pendf=pendf_pert, **ace_kws)
 
         if to_file:
-            file = f"{fn}.{suffix}c"
+            file = f"{fn}{suffix}c"
             with open(file, "w") as f:
                 if verbose:
                     print(f"writing to file '{file}'")
@@ -2333,20 +2136,21 @@ def endf6_perturb_worker(e6, pendf, nxs, pxs,
 
         return ace
 
-    out = {"endf6": endf6_pert}
-    if pendf_pert:
-        out["pendf"] = pendf_pert
-
-    if to_file:
-        file = f"{fn}.endf6"
-        if verbose:
-            print(f"writing to file '{file}'")
-        endf6_pert.to_file(file)
+    else:
+        out = {"endf6": endf6_pert.data}
         if pendf_pert:
-            file = f"{fn}.pendf"
+            out["pendf"] = pendf_pert.data
+
+        if to_file:
+            file = f"{fn}.endf6"
             if verbose:
                 print(f"writing to file '{file}'")
-            pendf_pert.to_file(file)
-        return
+            endf6_pert.to_file(file)
+            if pendf_pert:
+                file = f"{fn}.pendf"
+                if verbose:
+                    print(f"writing to file '{file}'")
+                pendf_pert.to_file(file)
+            return
 
-    return out
+        return out
